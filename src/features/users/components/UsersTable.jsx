@@ -1,9 +1,11 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteUser } from "../userSlice";
+import { deleteUser, setSort } from "../userSlice";
+import { sortedUsers } from "./../userSlice";
 
 const UsersTable = () => {
-  const users = useSelector((state) => state.users.users);
+  const { sortBy, sortOrder } = useSelector((state) => state.users);
+  const users = useSelector(sortedUsers);
   const dispatch = useDispatch();
 
   const getUserBadgeClass = (role) => {
@@ -24,11 +26,37 @@ const UsersTable = () => {
         <caption className="mb-3">Users Table</caption>
         <thead>
           <tr>
-            <th className="border">Name</th>
-            <th className="border">Email</th>
-            <th className="border">Role</th>
-            <th className="border">Status</th>
-            <th className="border">Join Date</th>
+            <th
+              onClick={() => dispatch(setSort("name"))}
+              className="cursor-pointer border"
+            >
+              Name {sortBy === "name" && (sortOrder === "asc" ? "↓" : "↑")}
+            </th>
+            <th
+              onClick={() => dispatch(setSort("email"))}
+              className="cursor-pointer border"
+            >
+              Email {sortBy === "email" && (sortOrder === "asc" ? "↓" : "↑")}
+            </th>
+            <th
+              onClick={() => dispatch(setSort("role"))}
+              className="cursor-pointer border"
+            >
+              Role {sortBy === "role" && (sortOrder === "asc" ? "↓" : "↑")}
+            </th>
+            <th
+              onClick={() => dispatch(setSort("status"))}
+              className="cursor-pointer border"
+            >
+              Status {sortBy === "status" && (sortOrder === "asc" ? "↓" : "↑")}
+            </th>
+            <th
+              onClick={() => dispatch(setSort("joinDate"))}
+              className="cursor-pointer border"
+            >
+              Join Date{" "}
+              {sortBy === "joinDate" && (sortOrder === "asc" ? "↓" : "↑")}
+            </th>
             <th className="border">Actions</th>
           </tr>
         </thead>

@@ -3,7 +3,7 @@ import users from "../../data/data";
 
 const usersSlice = createSlice({
   name: "users",
-  initialState: { users },
+  initialState: { users, sortBy: "name", sortOrder: "asc" },
   reducers: {
     addUser: (state, action) => {
       state.users.push(action.payload);
@@ -11,8 +11,40 @@ const usersSlice = createSlice({
     deleteUser: (state, action) => {
       state.users = state.users.filter((user) => user.id !== action.payload);
     },
+    setSort: (state, action) => {
+      const newSortBy = action.payload;
+
+      if (state.sortBy === newSortBy) {
+        // Aynı sütuna tekrar tıklandı → order'ı toggle et
+        state.sortOrder = state.sortOrder === "asc" ? "desc" : "asc";
+      } else {
+        // Farklı sütuna tıklandı → yeni sütun, asc ile başla
+        state.sortBy = newSortBy;
+        state.sortOrder = "asc";
+      }
+    },
   },
 });
 
-export const { addUser, deleteUser } = usersSlice.actions;
+export const sortedUsers = (state) => {
+  const { users, sortBy, sortOrder } = state.users;
+
+  return [...users].sort((a, b) => {
+    const valA = a[sortBy];
+    const valB = b[sortBy];
+
+    if (sortBy === "joinDate") {
+      return sortOrder === "asc"
+        ? new Date(valA) - new Date(valB)
+        : new Date(valB) - new Date(valA);
+    }
+
+    // String comparison
+    return sortOrder === "asc"
+      ? valA.localeCompare(valB)
+      : valB.localeCompare(valA);
+  });
+};
+
+export const { addUser, deleteUser, setSort } = usersSlice.actions;
 export default usersSlice.reducer;
