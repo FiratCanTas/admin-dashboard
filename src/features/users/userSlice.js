@@ -15,10 +15,8 @@ const usersSlice = createSlice({
       const newSortBy = action.payload;
 
       if (state.sortBy === newSortBy) {
-        // Aynı sütuna tekrar tıklandı → order'ı toggle et
         state.sortOrder = state.sortOrder === "asc" ? "desc" : "asc";
       } else {
-        // Farklı sütuna tıklandı → yeni sütun, asc ile başla
         state.sortBy = newSortBy;
         state.sortOrder = "asc";
       }
