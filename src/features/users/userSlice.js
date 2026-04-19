@@ -37,7 +37,6 @@ export const sortedUsers = (state) => {
         : new Date(valB) - new Date(valA);
     }
 
-    // String comparison
     return sortOrder === "asc"
       ? valA.localeCompare(valB)
       : valB.localeCompare(valA);
