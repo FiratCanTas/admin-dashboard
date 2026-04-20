@@ -9,6 +9,7 @@ const usersSlice = createSlice({
     sortOrder: "asc",
     filterRole: "all",
     filterStatus: "all",
+    searchQuery: "",
   },
   reducers: {
     addUser: (state, action) => {
@@ -28,6 +29,8 @@ const usersSlice = createSlice({
       }
     },
     setFilter: (state, action) => {
+      console.log("action", action.payload);
+
       const { name, value } = action.payload;
       state[name] = value;
     },
@@ -35,13 +38,20 @@ const usersSlice = createSlice({
 });
 
 export const sortedUsers = (state) => {
-  const { users, sortBy, sortOrder, filterRole, filterStatus } = state.users;
+  const { users, sortBy, sortOrder, filterRole, filterStatus, searchQuery } =
+    state.users;
 
-  const filteredUsers = users.filter(
-    (user) =>
-      (filterRole === "all" || user.role === filterRole) &&
-      (filterStatus === "all" || user.status === filterStatus),
-  );
+  const filteredUsers = users
+    .filter(
+      (user) =>
+        user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        user.name.toLowerCase().includes(searchQuery.toLowerCase()),
+    )
+    .filter(
+      (user) =>
+        (filterRole === "all" || user.role === filterRole) &&
+        (filterStatus === "all" || user.status === filterStatus),
+    );
 
   return [...filteredUsers].sort((a, b) => {
     const valA = a[sortBy];

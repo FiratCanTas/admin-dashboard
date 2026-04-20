@@ -1,12 +1,16 @@
 import React from "react";
 import UsersTable from "../features/users/components/UsersTable";
 import UserFilters from "../features/users/components/UserFilters";
+import UserSearch from "../features/users/components/UserSearch";
 
 const DashboardPage = () => {
   return (
-    <div>
-      Dashboard Page
-      <UserFilters />
+    <div className="flex flex-col gap-6 px-2">
+      <p className="mb-5">Dashboard Page</p>
+      <div className="flex  justify-center gap-10">
+        <UserFilters />
+        <UserSearch />
+      </div>
       <UsersTable />
     </div>
   );
