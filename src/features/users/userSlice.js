@@ -3,7 +3,13 @@ import users from "../../data/data";
 
 const usersSlice = createSlice({
   name: "users",
-  initialState: { users, sortBy: "name", sortOrder: "asc" },
+  initialState: {
+    users,
+    sortBy: "name",
+    sortOrder: "asc",
+    filterRole: "all",
+    filterStatus: "all",
+  },
   reducers: {
     addUser: (state, action) => {
       state.users.push(action.payload);
@@ -21,13 +27,23 @@ const usersSlice = createSlice({
         state.sortOrder = "asc";
       }
     },
+    setFilter: (state, action) => {
+      const { name, value } = action.payload;
+      state[name] = value;
+    },
   },
 });
 
 export const sortedUsers = (state) => {
-  const { users, sortBy, sortOrder } = state.users;
+  const { users, sortBy, sortOrder, filterRole, filterStatus } = state.users;
 
-  return [...users].sort((a, b) => {
+  const filteredUsers = users.filter(
+    (user) =>
+      (filterRole === "all" || user.role === filterRole) &&
+      (filterStatus === "all" || user.status === filterStatus),
+  );
+
+  return [...filteredUsers].sort((a, b) => {
     const valA = a[sortBy];
     const valB = b[sortBy];
 
@@ -43,5 +59,5 @@ export const sortedUsers = (state) => {
   });
 };
 
-export const { addUser, deleteUser, setSort } = usersSlice.actions;
+export const { addUser, deleteUser, setSort, setFilter } = usersSlice.actions;
 export default usersSlice.reducer;
