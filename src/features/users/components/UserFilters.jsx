@@ -9,7 +9,7 @@ const UserFilters = () => {
   );
 
   return (
-    <div className="flex justify-center gap-8">
+    <div className="flex gap-6">
       <div className="bg-gray-300 px-2 border rounded-sm">
         <label htmlFor="roleFilter" className="me-3">
           Role:
@@ -34,7 +34,7 @@ const UserFilters = () => {
 
       <div className="bg-gray-300 border px-2 rounded-sm">
         <label htmlFor="statusFilter" className="me-3">
-          Statu:
+          Status:
         </label>
         <select
           value={filterStatus}

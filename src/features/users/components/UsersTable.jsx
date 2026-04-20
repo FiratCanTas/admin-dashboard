@@ -22,8 +22,7 @@ const UsersTable = () => {
 
   return (
     <div>
-      <table className="text-center w-full">
-        <caption className="mb-3">Users Table</caption>
+      <table width="100%" className="text-center">
         <thead>
           <tr>
             <th
@@ -92,6 +91,7 @@ const UsersTable = () => {
           ))}
         </tbody>
       </table>
+      <div className="text-center mt-2">Users Table</div>
     </div>
   );
 };
