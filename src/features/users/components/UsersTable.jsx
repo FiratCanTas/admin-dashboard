@@ -1,11 +1,11 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteUser, setSort } from "../userSlice";
-import { sortedUsers } from "./../userSlice";
+import { sortUsers } from "./../userSlice";
 
 const UsersTable = () => {
   const { sortBy, sortOrder } = useSelector((state) => state.users);
-  const users = useSelector(sortedUsers);
+  const users = useSelector(sortUsers);
   const dispatch = useDispatch();
 
   const getUserBadgeClass = (role) => {

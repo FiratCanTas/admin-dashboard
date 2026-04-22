@@ -2,6 +2,7 @@ import React from "react";
 import UsersTable from "../features/users/components/UsersTable";
 import UserFilters from "../features/users/components/UserFilters";
 import UserSearch from "../features/users/components/UserSearch";
+import Pagination from "../shared/components/Pagination";
 
 const DashboardPage = () => {
   return (
@@ -12,6 +13,7 @@ const DashboardPage = () => {
         <UserSearch />
       </div>
       <UsersTable />
+      <Pagination />
     </div>
   );
 };
