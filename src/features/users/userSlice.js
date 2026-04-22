@@ -1,5 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 import users from "../../data/data";
+import {
+  filterByConditions,
+  paginate,
+  searchByFields,
+  sortByField,
+} from "../../utils/dataUtils";
 
 const usersSlice = createSlice({
   name: "users",
@@ -42,53 +48,36 @@ const usersSlice = createSlice({
   },
 });
 
-//1. buraya direkt kullanacagin veri gelsin users yani
-//2. [...filteredUsers] tekrar kopya etmen gerekiyor mu gerekmiyor mu emin ol yoksa direkt filteredUsers verisini kullan.
-//3. asagidaki finkdiyonun ismini duzelt sortUsers
-//4. fonksiyonun birden cok islevi bunlari parcalara bol ve her bir fonksiyonun bir islevi olsun.
+const getFilteredUsers = (state) => {
+  const { users, filterRole, filterStatus, searchQuery } = state.users;
 
-export const sortUsers = (state) => {
-  console.log("calistim");
+  const searched = searchByFields(users, searchQuery, ["name", "email"]);
 
-  const {
-    users,
-    sortBy,
-    sortOrder,
-    filterRole,
-    filterStatus,
-    searchQuery,
-    currentPage,
-    itemsPerPage,
-  } = state.users;
+  if (filterRole === "all" && filterStatus === "all") return searched;
 
-  const filteredUsers = users
-    .filter(
-      (user) =>
-        user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        user.name.toLowerCase().includes(searchQuery.toLowerCase()),
-    )
-    .filter(
-      (user) =>
-        (filterRole === "all" || user.role === filterRole) &&
-        (filterStatus === "all" || user.status === filterStatus),
-    );
+  const filtered = filterByConditions(searched, [
+    { key: "role", value: filterRole },
+    { key: "status", value: filterStatus },
+  ]);
 
-  return [...filteredUsers]
-    .sort((a, b) => {
-      const valA = a[sortBy];
-      const valB = b[sortBy];
+  return filtered;
+};
 
-      if (sortBy === "joinDate") {
-        return sortOrder === "asc"
-          ? new Date(valA) - new Date(valB)
-          : new Date(valB) - new Date(valA);
-      }
+export const selectFilteredUserCount = (state) => {
+  const filteredUserCount = getFilteredUsers(state).length;
+  return filteredUserCount;
+};
 
-      return sortOrder === "asc"
-        ? valA.localeCompare(valB)
-        : valB.localeCompare(valA);
-    })
-    .slice(currentPage * itemsPerPage - 5, currentPage * itemsPerPage);
+export const selectProcessedUsers = (state) => {
+  const { sortBy, sortOrder, currentPage, itemsPerPage } = state.users;
+
+  const filtered = getFilteredUsers(state);
+
+  const sorted = sortByField(filtered, sortBy, sortOrder);
+
+  const result = paginate(sorted, itemsPerPage, currentPage);
+
+  return result;
 };
 
 export const { addUser, deleteUser, setSort, setFilter, setPage } =

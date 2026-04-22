@@ -1,16 +1,15 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setPage } from "../../features/users/userSlice";
+import {
+  selectFilteredUserCount,
+  setPage,
+} from "../../features/users/userSlice";
 
 const Pagination = () => {
-  const { currentPage, itemsPerPage, users } = useSelector(
-    (state) => state.users,
-  );
+  const { currentPage, itemsPerPage } = useSelector((state) => state.users);
+  const totalUsers = useSelector(selectFilteredUserCount);
   const dispatch = useDispatch();
-  const totalPages = Math.ceil(users.length / itemsPerPage);
-
-  console.log("totalPages", totalPages);
-  console.log("currentPage", currentPage);
+  const totalPages = Math.ceil(totalUsers / itemsPerPage);
 
   const getPageNumbers = () => {
     if (totalPages <= 3)
@@ -23,6 +22,10 @@ const Pagination = () => {
   };
 
   const pageNumbers = getPageNumbers();
+
+  if (!pageNumbers.length) {
+    return;
+  }
 
   return (
     <div className="flex justify-between px-5">
@@ -69,7 +72,7 @@ const Pagination = () => {
       </div>
       <div>
         <p>
-          {`${currentPage * itemsPerPage - 4} - ${users.length <= currentPage * itemsPerPage ? users.length : currentPage * itemsPerPage} out of ${users.length} users`}
+          {`${currentPage * itemsPerPage - 4} - ${totalUsers <= currentPage * itemsPerPage ? totalUsers : currentPage * itemsPerPage} out of ${totalUsers} users`}
         </p>
       </div>
     </div>
