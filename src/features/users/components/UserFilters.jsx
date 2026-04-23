@@ -10,8 +10,8 @@ const UserFilters = () => {
 
   return (
     <div className="flex gap-6">
-      <div className="bg-gray-300 px-2 border rounded-sm">
-        <label htmlFor="roleFilter" className="me-3">
+      <div className="bg-gray-200 px-2 border rounded-sm text-nowrap">
+        <label htmlFor="roleFilter" className="me-1">
           Role:
         </label>
         <select
@@ -21,7 +21,7 @@ const UserFilters = () => {
               setFilter({ name: "filterRole", value: event.target.value }),
             )
           }
-          className=" focus-visible:outline-0 bg-gray-300"
+          className="w-12 focus-visible:outline-0 bg-gray-200"
           name="roleFilter"
           id="roleFilter"
         >
@@ -32,8 +32,8 @@ const UserFilters = () => {
         </select>
       </div>
 
-      <div className="bg-gray-300 border px-2 rounded-sm">
-        <label htmlFor="statusFilter" className="me-3">
+      <div className="bg-gray-200 border px-2 rounded-sm">
+        <label htmlFor="statusFilter" className="me-1">
           Status:
         </label>
         <select
@@ -43,7 +43,7 @@ const UserFilters = () => {
               setFilter({ name: "filterStatus", value: event.target.value }),
             )
           }
-          className=" focus-visible:outline-0 bg-gray-300"
+          className=" w-12 focus-visible:outline-0 bg-gray-200"
           name="statusFilter"
           id="statusFilter"
         >
